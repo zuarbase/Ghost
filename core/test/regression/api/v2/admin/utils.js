@@ -20,12 +20,15 @@ const expectedProperties = {
 
     post: _(schema.posts)
         .keys()
-        // by default we only return html
-        .without('mobiledoc', 'plaintext')
+        // by default we only return mobiledoc
+        .without('html', 'plaintext')
         .without('visibility')
         .without('locale')
-        // always returns computed properties: url, comment_id, primary_tag, primary_author
-        .without('author_id').concat('url', 'primary_tag', 'primary_author')
+        .without('page')
+        .without('author_id')
+        // always returns computed properties
+        .concat('url', 'primary_tag', 'primary_author', 'excerpt')
+        .concat('authors', 'tags')
     ,
     user: _(schema.users)
         .keys()
@@ -101,15 +104,14 @@ module.exports = {
     getValidAdminToken(endpoint) {
         const jwt = require('jsonwebtoken');
         const JWT_OPTIONS = {
+            keyid: testUtils.DataGenerator.Content.api_keys[0].id,
             algorithm: 'HS256',
             expiresIn: '5m',
             audience: endpoint
         };
 
         return jwt.sign(
-            {
-                kid: testUtils.DataGenerator.Content.api_keys[0].id
-            },
+            {},
             Buffer.from(testUtils.DataGenerator.Content.api_keys[0].secret, 'hex'),
             JWT_OPTIONS
         );

@@ -43,7 +43,7 @@ describe('Posts API', function () {
                     const jsonResponse = res.body;
                     should.exist(jsonResponse.posts);
                     localUtils.API.checkResponse(jsonResponse, 'posts');
-                    jsonResponse.posts.should.have.length(11);
+                    jsonResponse.posts.should.have.length(13);
 
                     localUtils.API.checkResponse(
                         jsonResponse.posts[0],
@@ -74,7 +74,8 @@ describe('Posts API', function () {
                     const jsonResponse = res.body;
                     should.exist(jsonResponse.posts);
                     localUtils.API.checkResponse(jsonResponse, 'posts');
-                    jsonResponse.posts.should.have.length(11);
+                    jsonResponse.posts.should.have.length(13);
+
                     localUtils.API.checkResponse(
                         jsonResponse.posts[0],
                         'post',
@@ -107,7 +108,16 @@ describe('Posts API', function () {
                     var jsonResponse = res.body;
                     should.exist(jsonResponse);
                     should.exist(jsonResponse.errors);
-                    testUtils.API.checkResponseValue(jsonResponse.errors[0], ['message', 'errorType']);
+                    testUtils.API.checkResponseValue(jsonResponse.errors[0], [
+                        'message',
+                        'context',
+                        'type',
+                        'details',
+                        'property',
+                        'help',
+                        'code',
+                        'id'
+                    ]);
                     done();
                 });
         });
@@ -138,7 +148,6 @@ describe('Posts API', function () {
                     should.not.exist(res.headers['x-cache-invalidate']);
                     should.exist(res.body.posts);
                     should.exist(res.body.posts[0].published_at);
-                    localUtils.API.checkResponse(res.body.posts[0], 'post');
                 });
         });
 
@@ -160,8 +169,6 @@ describe('Posts API', function () {
                 .then((res) => {
                     // @NOTE: you cannot modify these fields above manually, that's why the resource won't change.
                     should.not.exist(res.headers['x-cache-invalidate']);
-
-                    localUtils.API.checkResponse(res.body.posts[0], 'post');
 
                     return models.Post.findOne({
                         id: res.body.posts[0].id
@@ -192,7 +199,16 @@ describe('Posts API', function () {
                     should.not.exist(res.headers['x-cache-invalidate']);
                     should.exist(res.body);
                     should.exist(res.body.errors);
-                    testUtils.API.checkResponseValue(res.body.errors[0], ['message', 'errorType']);
+                    testUtils.API.checkResponseValue(res.body.errors[0], [
+                        'message',
+                        'context',
+                        'type',
+                        'details',
+                        'property',
+                        'help',
+                        'code',
+                        'id'
+                    ]);
                 });
         });
     });

@@ -6,6 +6,7 @@ describe('Unit: v2/utils/serializers/input/pages', function () {
         it('default', function () {
             const apiConfig = {};
             const frame = {
+                apiType: 'content',
                 options: {
                     context: {}
                 },
@@ -18,6 +19,7 @@ describe('Unit: v2/utils/serializers/input/pages', function () {
         it('combine filters', function () {
             const apiConfig = {};
             const frame = {
+                apiType: 'content',
                 options: {
                     filter: 'status:published+tag:eins',
                     context: {}
@@ -31,6 +33,7 @@ describe('Unit: v2/utils/serializers/input/pages', function () {
         it('combine filters', function () {
             const apiConfig = {};
             const frame = {
+                apiType: 'content',
                 options: {
                     filter: 'page:false+tag:eins',
                     context: {}
@@ -44,6 +47,7 @@ describe('Unit: v2/utils/serializers/input/pages', function () {
         it('combine filters', function () {
             const apiConfig = {};
             const frame = {
+                apiType: 'content',
                 options: {
                     filter: 'page:false',
                     context: {}
@@ -57,6 +61,7 @@ describe('Unit: v2/utils/serializers/input/pages', function () {
         it('remove mobiledoc option from formats', function () {
             const apiConfig = {};
             const frame = {
+                apiType: 'content',
                 options: {
                     formats: ['html', 'mobiledoc', 'plaintext'],
                     context: {}
@@ -71,42 +76,100 @@ describe('Unit: v2/utils/serializers/input/pages', function () {
     });
 
     describe('read', function () {
-        it('default', function () {
+        it('content api default', function () {
             const apiConfig = {};
             const frame = {
+                apiType: 'content',
                 options: {
                     context: {}
                 },
-                data: {
-                    status: 'all'
-                }
+                data: {}
             };
 
             serializers.input.pages.read(apiConfig, frame);
-            frame.data.status.should.eql('all');
-            frame.data.page.should.eql(true);
+            frame.options.filter.should.eql('page:true');
         });
 
-        it('overrides page', function () {
+        it('content api default', function () {
             const apiConfig = {};
             const frame = {
+                apiType: 'content',
                 options: {
-                    context: {}
+                    context: {
+                        user: 0,
+                        api_key: {
+                            id: 1,
+                            type: 'content'
+                        },
+                    }
                 },
-                data: {
-                    status: 'all',
-                    page: false
-                }
+                data: {}
             };
 
             serializers.input.pages.read(apiConfig, frame);
-            frame.data.status.should.eql('all');
-            frame.data.page.should.eql(true);
+            frame.options.filter.should.eql('page:true');
+        });
+
+        it('admin api default', function () {
+            const apiConfig = {};
+            const frame = {
+                apiType: 'admin',
+                options: {
+                    context: {
+                        user: 0,
+                        api_key: {
+                            id: 1,
+                            type: 'admin'
+                        },
+                    }
+                },
+                data: {}
+            };
+
+            serializers.input.pages.read(apiConfig, frame);
+            frame.options.filter.should.eql('(page:true)+status:[draft,published,scheduled]');
+        });
+
+        it('custom page filter', function () {
+            const apiConfig = {};
+            const frame = {
+                apiType: 'content',
+                options: {
+                    filter: 'page:false',
+                    context: {}
+                },
+                data: {}
+            };
+
+            serializers.input.pages.read(apiConfig, frame);
+            frame.options.filter.should.eql('(page:false)+page:true');
+        });
+
+        it('custom status filter', function () {
+            const apiConfig = {};
+            const frame = {
+                apiType: 'admin',
+                options: {
+                    filter: 'status:draft',
+                    context: {
+                        user: 0,
+                        api_key: {
+                            id: 1,
+                            type: 'admin'
+                        },
+                    }
+                },
+                data: {}
+            };
+
+            serializers.input.pages.read(apiConfig, frame);
+            frame.options.filter.should.eql('(status:draft)+page:true');
         });
 
         it('remove mobiledoc option from formats', function () {
             const apiConfig = {};
             const frame = {
+                apiType: 'content',
                 options: {
                     formats: ['html', 'mobiledoc', 'plaintext'],
                     context: {}
@@ -121,6 +184,54 @@ describe('Unit: v2/utils/serializers/input/pages', function () {
             frame.options.formats.should.not.containEql('mobiledoc');
             frame.options.formats.should.containEql('html');
             frame.options.formats.should.containEql('plaintext');
+        });
+    });
+
+    describe('Ensure relations format', function () {
+        it('relations is array of objects', function () {
+            const apiConfig = {};
+
+            const frame = {
+                apiType: 'content',
+                options: {},
+                data: {
+                    pages: [
+                        {
+                            id: 'id1',
+                            authors: [{id: 'id'}],
+                            tags: [{slug: 'slug1', name: 'hey'}, {slug: 'slug2'}]
+                        }
+                    ]
+                }
+            };
+
+            serializers.input.pages.edit(apiConfig, frame);
+
+            frame.data.pages[0].authors.should.eql([{id: 'id'}]);
+            frame.data.pages[0].tags.should.eql([{slug: 'slug1', name: 'hey'}, {slug: 'slug2'}]);
+        });
+
+        it('authors is array of strings', function () {
+            const apiConfig = {};
+
+            const frame = {
+                apiType: 'content',
+                options: {},
+                data: {
+                    pages: [
+                        {
+                            id: 'id1',
+                            authors: ['email1', 'email2'],
+                            tags: ['name1', 'name2'],
+                        }
+                    ]
+                }
+            };
+
+            serializers.input.pages.edit(apiConfig, frame);
+
+            frame.data.pages[0].authors.should.eql([{email: 'email1'}, {email: 'email2'}]);
+            frame.data.pages[0].tags.should.eql([{name: 'name1'}, {name: 'name2'}]);
         });
     });
 });

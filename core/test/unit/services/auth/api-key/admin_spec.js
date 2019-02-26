@@ -33,11 +33,11 @@ describe('Admin API Key Auth', function () {
 
     it('should authenticate known+valid API key', function (done) {
         const token = jwt.sign({
-            kid: this.fakeApiKey.id
         }, this.secret, {
+            keyid: this.fakeApiKey.id,
             algorithm: 'HS256',
             expiresIn: '5m',
-            audience: '/test/',
+            audience: '/v2/admin/',
             issuer: this.fakeApiKey.id
         });
 
@@ -94,11 +94,11 @@ describe('Admin API Key Auth', function () {
 
     it('shouldn\'t authenticate with invalid/unknown key', function (done) {
         const token = jwt.sign({
-            kid: 'unknown'
         }, this.secret, {
+            keyid: 'unknown',
             algorithm: 'HS256',
             expiresIn: '5m',
-            audience: '/test/',
+            audience: 'wrong audience',
             issuer: 'unknown'
         });
 
@@ -121,13 +121,13 @@ describe('Admin API Key Auth', function () {
 
     it('shouldn\'t authenticate with JWT signed > 5min ago', function (done) {
         const payload = {
-            kid: this.fakeApiKey.id,
             iat: Math.floor(Date.now() / 1000) - 6 * 60
         };
         const token = jwt.sign(payload, this.secret, {
+            keyid: this.fakeApiKey.id,
             algorithm: 'HS256',
             expiresIn: '5m',
-            audience: '/test/',
+            audience: '/v2/admin/',
             issuer: this.fakeApiKey.id
         });
 
@@ -151,13 +151,13 @@ describe('Admin API Key Auth', function () {
 
     it('shouldn\'t authenticate with JWT with maxAge > 5min', function (done) {
         const payload = {
-            kid: this.fakeApiKey.id,
             iat: Math.floor(Date.now() / 1000) - 6 * 60
         };
         const token = jwt.sign(payload, this.secret, {
+            keyid: this.fakeApiKey.id,
             algorithm: 'HS256',
             expiresIn: '10m',
-            audience: '/test/',
+            audience: '/v2/admin/',
             issuer: this.fakeApiKey.id
         });
 
@@ -181,11 +181,11 @@ describe('Admin API Key Auth', function () {
 
     it('shouldn\'t authenticate with a Content API Key', function (done) {
         const token = jwt.sign({
-            kid: this.fakeApiKey.id
         }, this.secret, {
+            keyid: this.fakeApiKey.id,
             algorithm: 'HS256',
             expiresIn: '5m',
-            audience: '/test/',
+            audience: '/v2/admin/',
             issuer: this.fakeApiKey.id
         });
 

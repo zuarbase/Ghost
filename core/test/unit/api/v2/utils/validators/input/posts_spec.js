@@ -143,7 +143,6 @@ describe('Unit: v2/utils/validators/input/posts', function () {
                 mobiledoc: [123, new Date()],
                 feature_image: [123, new Date(), 'random words'],
                 featured: [123, new Date(), 'abc'],
-                page: [123, new Date(), 'abc'],
                 status: [123, new Date(), 'abc'],
                 locale: [123, new Date(), _.repeat('a', 7)],
                 visibility: [123, new Date(), 'abc'],
@@ -381,6 +380,38 @@ describe('Unit: v2/utils/validators/input/posts', function () {
                         posts: [
                             {
                                 title: 'cool',
+                                updated_at: new Date().toISOString()
+                            }
+                        ]
+                    }
+                };
+
+                return validators.input.posts.edit(apiConfig, frame);
+            });
+
+            it('should pass with authors as array with strings', function () {
+                const frame = {
+                    options: {},
+                    data: {
+                        posts: [
+                            {
+                                authors: ['email1', 'email2'],
+                                updated_at: new Date().toISOString()
+                            }
+                        ]
+                    }
+                };
+
+                return validators.input.posts.edit(apiConfig, frame);
+            });
+
+            it('should pass with authors as array with strings & objects', function () {
+                const frame = {
+                    options: {},
+                    data: {
+                        posts: [
+                            {
+                                authors: ['email1', {email: 'email'}],
                                 updated_at: new Date().toISOString()
                             }
                         ]

@@ -7,6 +7,7 @@ const API_URL = '/ghost/api/v2/admin/';
 const expectedProperties = {
     // API top level
     posts: ['posts', 'meta'],
+    pages: ['pages', 'meta'],
     tags: ['tags', 'meta'],
     users: ['users', 'meta'],
     settings: ['settings', 'meta'],
@@ -21,15 +22,38 @@ const expectedProperties = {
 
     action: ['id', 'resource_type', 'actor_type', 'event', 'created_at', 'actor'],
 
+    config: ['version', 'environment', 'database', 'mail', 'labs', 'clientExtensions', 'enableDeveloperExperiments', 'useGravatar'],
+
     post: _(schema.posts)
         .keys()
-        // by default we only return html
-        .without('mobiledoc', 'plaintext')
+        // by default we only return mobildoc
+        .without('html', 'plaintext')
         .without('visibility')
         .without('locale')
-        // always returns computed properties: url, comment_id, primary_tag, primary_author
-        .without('author_id').concat('url', 'primary_tag', 'primary_author')
+        .without('page')
+        // deprecated
+        .without('author_id')
+        // always returns computed properties
+        .concat('url', 'primary_tag', 'primary_author', 'excerpt')
+        // returned by default
+        .concat('tags', 'authors')
     ,
+
+    page: _(schema.posts)
+        .keys()
+        // by default we only return mobildoc
+        .without('html', 'plaintext')
+        .without('visibility')
+        .without('locale')
+        .without('page')
+        // deprecated
+        .without('author_id')
+        // always returns computed properties
+        .concat('url', 'primary_tag', 'primary_author', 'excerpt')
+        // returned by default
+        .concat('tags', 'authors')
+    ,
+
     user: _(schema.users)
         .keys()
         .without('visibility')
@@ -101,18 +125,17 @@ module.exports = {
         return testUtils.API.doAuth(`${API_URL}session/`, ...args);
     },
 
-    getValidAdminToken(endpoint) {
+    getValidAdminToken(audience) {
         const jwt = require('jsonwebtoken');
         const JWT_OPTIONS = {
+            keyid: testUtils.DataGenerator.Content.api_keys[0].id,
             algorithm: 'HS256',
             expiresIn: '5m',
-            audience: endpoint
+            audience: audience
         };
 
         return jwt.sign(
-            {
-                kid: testUtils.DataGenerator.Content.api_keys[0].id
-            },
+            {},
             Buffer.from(testUtils.DataGenerator.Content.api_keys[0].secret, 'hex'),
             JWT_OPTIONS
         );
