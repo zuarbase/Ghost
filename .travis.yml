@@ -1,68 +1,41 @@
+dist: xenial
 language: node_js
-# When changing node version also update it on lines 23 and 52.
 node_js:
-  - "10"
-  - "8"
-  - "6"
-
-sudo: false
-
-cache:
-  yarn: true
-  directories:
-    - node_modules
-
+- '10'
+- '8'
+- '6'
+cache: yarn
+services:
+- mysql
 env:
-  global:
-    - GITHUB_OAUTH_KEY=003a44d58f12089d0c0261338298af3813330949
   matrix:
-    - DB=sqlite3 NODE_ENV=testing
-    - DB=mysql NODE_ENV=testing-mysql
-
+  - DB=sqlite3 NODE_ENV=testing
+  - DB=mysql NODE_ENV=testing-mysql
 matrix:
   include:
-    - node_js: "10"
-      env: TEST_SUITE=lint
+  - node_js: '10'
+    env: TEST_SUITE=lint
   fast_finish: true
-
 branches:
   except:
-    - /^greenkeeper-.+$/
-
-before_install:
-  - if [ $DB == "mysql" ]; then mysql -e 'create database ghost_testing'; fi
-  - curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo -E apt-key add -
-  - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee -a /etc/apt/sources.list >/dev/null
-  - sudo -E apt-get -yq update &>> ~/apt-get-update.log
-  - sudo -E apt-get -yq --no-install-suggests --no-install-recommends $TRAVIS_APT_OPTS install yarn
-
+  - "/^renovate\\/.+$/"
 install:
-  - yarn
-  - if [ "$DB" == "sqlite3" ]; then yarn add --force sqlite3; fi # fix sqlite caching issues
-
+- yarn
+before_script:
+- if [ $DB == "mysql" ]; then mysql -e 'create database ghost_testing'; fi
+- if [ "$DB" == "sqlite3" ]; then yarn add --force sqlite3; fi
 script: |
-  if [ "${TRAVIS_EVENT_TYPE}" = "cron" && "${TEST_SUITE}" != "lint" ]; then
-    yarn test:regression
+  if [ "$TEST_SUITE" == "lint" ]; then
+    yarn lint
+  elif [[ "$TRAVIS_PULL_REQUEST_BRANCH" =~ ^renovate || "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
+    yarn ci:regression
   else
-    yarn test
+    yarn ci
   fi
-
-after_success:
-  - |
-      if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-        if [[ "$DB" = "sqlite3" && "$TRAVIS_NODE_VERSION" = "10" ]]; then
-          echo "Generate coverage..."
-          grunt coverage
-          npm install -g codeclimate-test-reporter
-          codeclimate-test-reporter < core/test/coverage/unit/lcov.info
-        else
-          echo "False DB and NODE_VERSION. No coverage generated."
-        fi
-      else
-        echo "This is a PR. No coverage generated."
-      fi
-
-after_failure: |
-  if [ "${TRAVIS_EVENT_TYPE}" == "cron" ]; then
-    curl -X POST --data-urlencode "payload={\"attachments\": [{\"color\": \"danger\", \"fallback\": \"Build Failure: $TRAVIS_JOB_WEB_URL\", \"title\": \"Build Failure\", \"text\": \"$TRAVIS_JOB_WEB_URL\"}]}" $SLACK_URL
-  fi
+notifications:
+  slack:
+    rooms:
+      - secure: KzvGpf6RFHgQ3BkppKM4OejFjJYxH60KkDDShet0a0v+j/03HF5Nx0S0Vl9O/F2dPt2qWvblKb3j9EKgB7RsoFSdZuOk7ijA9Duvn+p9RrLom0C9JxOA3ob065WAGyE0OGRm1P5H98loX/L+6oOHC4/qqGKXgz6gUdBtZBn/yo8=
+    on_success: change
+    on_failure: always
+    on_pull_requests: false
