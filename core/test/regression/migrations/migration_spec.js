@@ -205,6 +205,14 @@ describe('Database Migration (special functions)', function () {
             permissions[67].name.should.eql('Edit Members');
             permissions[68].name.should.eql('Add Members');
             permissions[69].name.should.eql('Delete Members');
+
+            // Posts
+            permissions[70].name.should.eql('Publish posts');
+            permissions[70].should.be.AssignedToRoles(['Administrator', 'Editor', 'Admin Integration', 'Scheduler Integration']);
+
+            // DB
+            permissions[71].name.should.eql('Backup database');
+            permissions[71].should.be.AssignedToRoles(['Administrator', 'DB Backup Integration']);
         });
 
         describe('Populate', function () {
@@ -260,7 +268,7 @@ describe('Database Migration (special functions)', function () {
 
                     // Roles
                     should.exist(result.roles);
-                    result.roles.length.should.eql(7);
+                    result.roles.length.should.eql(8);
                     result.roles.at(0).get('name').should.eql('Administrator');
                     result.roles.at(1).get('name').should.eql('Editor');
                     result.roles.at(2).get('name').should.eql('Author');
@@ -268,9 +276,10 @@ describe('Database Migration (special functions)', function () {
                     result.roles.at(4).get('name').should.eql('Owner');
                     result.roles.at(5).get('name').should.eql('Admin Integration');
                     result.roles.at(6).get('name').should.eql('DB Backup Integration');
+                    result.roles.at(7).get('name').should.eql('Scheduler Integration');
 
                     // Permissions
-                    result.permissions.length.should.eql(70);
+                    result.permissions.length.should.eql(72);
                     result.permissions.toJSON().should.be.CompletePermissions();
                 });
             });
