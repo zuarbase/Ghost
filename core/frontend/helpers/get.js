@@ -120,6 +120,10 @@ function parseOptions(globals, data, options) {
         options.filter = resolvePaths(globals, data, options.filter);
     }
 
+    if (_.isString(options.options)) {
+        options.options = resolvePaths(globals, data, options.options);
+    }
+
     return options;
 }
 
@@ -166,6 +170,7 @@ get = function get(resource, options) {
 
     // Parse the options we're going to pass to the API
     apiOptions = parseOptions(ghostGlobals, this, apiOptions);
+    console.log('GET options', apiOptions);
 
     // @TODO: https://github.com/TryGhost/Ghost/issues/10548
     return api[apiVersion][controller][action](apiOptions).then(function success(result) {
