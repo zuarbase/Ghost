@@ -12,7 +12,9 @@ const queryDefaults = {
     type: 'browse',
     resource: 'posts',
     controller: 'postsPublic',
-    options: {}
+    options: {
+        order: 'sort_order asc'
+    }
 };
 
 /**
@@ -24,7 +26,10 @@ const defaultQueryOptions = {
          * @deprecated: `author`, will be removed in Ghost 3.0
          * @TODO: Remove "author" when we drop v0.1
          */
-        include: 'author,authors,tags'
+        include: 'author,authors,tags',
+        options: {
+        order: 'sort_order asc'
+    }
     }
 };
 
