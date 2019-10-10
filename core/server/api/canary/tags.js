@@ -40,7 +40,8 @@ module.exports = {
         data: [
             'id',
             'slug',
-            'visibility'
+            'visibility',
+            'order'
         ],
         validation: {
             options: {
