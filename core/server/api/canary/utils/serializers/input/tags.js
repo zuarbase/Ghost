@@ -4,7 +4,7 @@ const utils = require('../../index');
 
 function setDefaultOrder(frame) {
     if (!frame.options.order) {
-        frame.options.order = 'name asc';
+        frame.options.order = 'order asc';
     }
 }
 
