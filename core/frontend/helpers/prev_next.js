@@ -22,17 +22,17 @@ buildApiOptions = function buildApiOptions(options, post) {
     var publishedAt = moment(post.published_at).format('YYYY-MM-DD HH:mm:ss'),
         slug = post.slug,
         op = options.name === 'prev_post' ? '<=' : '>',
-        order = options.name === 'prev_post' ? 'desc' : 'asc',
+        order = options.name === 'prev_post' ? 'asc' : 'desc',
         apiOptions = {
             /**
              * @deprecated: `author`, will be removed in Ghost 3.0
              */
             include: 'author,authors,tags',
-            order: 'published_at ' + order,
+            order: 'sort_order ' + order,
             limit: 1,
             // This line deliberately uses double quotes because GQL cannot handle either double quotes
             // or escaped singles, see TryGhost/GQL#34
-            filter: "slug:-" + slug + "+published_at:" + op + "'" + publishedAt + "'" // eslint-disable-line quotes
+            filter: "tags:["+post.primary_tag.slug+"]+slug:-" + slug + "+published_at:" + op + "'" + publishedAt + "'" // eslint-disable-line quotes
         };
 
     if (_.get(options, 'hash.in')) {
