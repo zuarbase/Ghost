@@ -6,8 +6,7 @@ module.exports.QUERY = {
         resource: 'tags',
         options: {
             slug: '%s',
-            visibility: 'public',
-            order: 'sort_order asc'
+            visibility: 'public'
         }
     },
     author: {

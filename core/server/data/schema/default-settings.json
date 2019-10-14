@@ -140,6 +140,14 @@
                 }
             }
         },
+        "sort_order": {
+            "defaultValue": null,
+            "validations": {
+                "isLength": {
+                    "max": 300
+                }
+            }
+        },
         "twitter_image": {
             "defaultValue": null,
             "validations": {

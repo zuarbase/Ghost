@@ -12,7 +12,7 @@ module.exports = {
         operationVerb: 'Adding',
         columnDefinition: {
             type: 'integer',
-            nullable: false,
+            nullable: true,
             unsigned: true,
             defaultTo: 1000
         }
