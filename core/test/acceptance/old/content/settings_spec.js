@@ -43,7 +43,7 @@ describe('Settings Content API', function () {
 
                 // Verify we have the right keys for settings
                 settings.should.have.properties(_.values(publicSettings));
-                Object.keys(settings).length.should.equal(23);
+                Object.keys(settings).length.should.equal(24);
 
                 // Verify that we are returning the defaults for each value
                 _.forEach(settings, (value, key) => {

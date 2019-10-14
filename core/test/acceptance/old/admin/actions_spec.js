@@ -143,6 +143,9 @@ describe('Actions API', function () {
                 should.equal(res.body.actions[0].actor.image, null);
                 res.body.actions[0].actor.name.should.eql(testUtils.DataGenerator.Content.integrations[0].name);
                 res.body.actions[0].actor.slug.should.eql(testUtils.DataGenerator.Content.integrations[0].slug);
+            })
+            .catch(e => {
+                console.log(e);
             });
     });
 });
