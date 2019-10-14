@@ -9,7 +9,8 @@
                     "description":      null,
                     "parent_id":        null,
                     "meta_title":       null,
-                    "meta_description": null
+                    "meta_description": null,
+		    "order": 1000
                 }
             ]
         },
@@ -483,7 +484,8 @@
                     "published_by": "5951f5fca366002ebd5dbef7",
                     "author_id": "5951f5fca366002ebd5dbef7",
                     "custom_excerpt": "Ghost comes with a beautiful default theme called Casper, which is designed to be a clean, readable publication layout and can be easily adapted for most purposes.",
-                    "feature_image": "https://static.ghost.org/v2.0.0/images/creating-a-custom-theme.jpg"
+                    "feature_image": "https://static.ghost.org/v2.0.0/images/creating-a-custom-theme.jpg",
+                    "sort_order": 1000
                 },
                 {
                     "title": "Apps & integrations",
@@ -498,7 +500,8 @@
                     "published_by": "5951f5fca366002ebd5dbef7",
                     "author_id": "5951f5fca366002ebd5dbef7",
                     "custom_excerpt": "There are three primary ways to work with third-party services in Ghost: using Zapier, editing your theme, or using the Ghost API.",
-                    "feature_image": "https://static.ghost.org/v2.0.0/images/app-integrations.jpg"
+                    "feature_image": "https://static.ghost.org/v2.0.0/images/app-integrations.jpg",
+                    "sort_order": 1000
                 },
                 {
                     "title": "Organising your content",
@@ -513,7 +516,8 @@
                     "published_by": "5951f5fca366002ebd5dbef7",
                     "author_id": "5951f5fca366002ebd5dbef7",
                     "custom_excerpt": "Ghost has a flexible organisational taxonomy called tags which can be used to configure your site structure using dynamic routing.",
-                    "feature_image": "https://static.ghost.org/v2.0.0/images/organising-your-content.jpg"
+                    "feature_image": "https://static.ghost.org/v2.0.0/images/organising-your-content.jpg",
+                    "sort_order": 1000
                 },
                 {
                     "title": "Managing admin settings",
@@ -528,7 +532,8 @@
                     "published_by": "5951f5fca366002ebd5dbef7",
                     "author_id": "5951f5fca366002ebd5dbef7",
                     "custom_excerpt": "There are a couple of things to do next while you're getting set up: making your site private and inviting your team.",
-                    "feature_image": "https://static.ghost.org/v2.0.0/images/admin-settings.jpg"
+                    "feature_image": "https://static.ghost.org/v2.0.0/images/admin-settings.jpg",
+                    "sort_order": 1000
                 },
                 {
                     "title": "Publishing options",
@@ -543,7 +548,8 @@
                     "published_by": "5951f5fca366002ebd5dbef7",
                     "author_id": "5951f5fca366002ebd5dbef7",
                     "custom_excerpt": "The Ghost editor has everything you need to fully optimise your content. This is where you can add tags and authors, feature a post, or turn a post into a page.",
-                    "feature_image": "https://static.ghost.org/v2.0.0/images/publishing-options.jpg"
+                    "feature_image": "https://static.ghost.org/v2.0.0/images/publishing-options.jpg",
+                    "sort_order": 1000
                 },
                 {
                     "title": "Writing posts with Ghost ✍️",
@@ -558,7 +564,8 @@
                     "published_by": "5951f5fca366002ebd5dbef7",
                     "author_id": "5951f5fca366002ebd5dbef7",
                     "custom_excerpt": "Getting started with the editor is simple, with familiar formatting options in a functional toolbar and the ability to add dynamic content seamlessly.",
-                    "feature_image": "https://static.ghost.org/v2.0.0/images/writing-posts-with-ghost.jpg"
+                    "feature_image": "https://static.ghost.org/v2.0.0/images/writing-posts-with-ghost.jpg",
+                    "sort_order": 1000
                 },
                 {
                     "title": "Welcome to Ghost",
@@ -573,7 +580,8 @@
                     "published_by": "5951f5fca366002ebd5dbef7",
                     "author_id": "5951f5fca366002ebd5dbef7",
                     "custom_excerpt": "Welcome, it's great to have you here.\nWe know that first impressions are important, so we've populated your new site with some initial getting started posts that will help you get familiar with everything in no time.",
-                    "feature_image": "https://static.ghost.org/v2.0.0/images/welcome-to-ghost.jpg"
+                    "feature_image": "https://static.ghost.org/v2.0.0/images/welcome-to-ghost.jpg",
+                    "sort_order": 1000
                 }
             ]
         },
