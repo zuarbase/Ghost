@@ -22,18 +22,33 @@ buildApiOptions = function buildApiOptions(options, post) {
     var publishedAt = moment(post.published_at).format('YYYY-MM-DD HH:mm:ss'),
         slug = post.slug,
         op = options.name === 'prev_post' ? '<=' : '>',
-        order = options.name === 'prev_post' ? 'asc' : 'desc',
+        orderDirection = options.name === 'prev_post' ? 'desc' : 'asc',
+        // This line deliberately uses double quotes because GQL cannot handle either double quotes
+        // or escaped singles, see TryGhost/GQL#34
+        defaultOrderFilter = "+published_at:" + op + "'" + publishedAt + "'", // eslint-disable-line quotes
         apiOptions = {
             /**
              * @deprecated: `author`, will be removed in Ghost 3.0
              */
             include: 'author,authors,tags',
-            order: 'sort_order ' + order,
+            order: 'published_at ' + orderDirection,
             limit: 1,
-            // This line deliberately uses double quotes because GQL cannot handle either double quotes
-            // or escaped singles, see TryGhost/GQL#34
-            filter: "tags:["+post.primary_tag.slug+"]+slug:-" + slug + "+published_at:" + op + "'" + publishedAt + "'" // eslint-disable-line quotes
+            filter: "slug:-" + slug
         };
+
+    if (_.get(options, 'hash.in')) {
+        if (options.hash.in === 'primary_tag' && _.get(post, 'primary_tag.slug')) {
+            apiOptions.filter += defaultOrderFilter + '+primary_tag:' + post.primary_tag.slug;
+        } else if (options.hash.in === 'primary_author' && _.get(post, 'primary_author.slug')) {
+            apiOptions.filter += defaultOrderFilter + '+primary_author:' + post.primary_author.slug;
+        } else if (options.hash.in === 'author' && _.get(post, 'author.slug')) {
+            apiOptions.filter += defaultOrderFilter + '+author:' + post.author.slug;
+        }
+    }
+
+    if (!_.get(options, 'hash.order')) {
+        apiOptions.filter += defaultOrderFilter;
+    }
 
     if (_.get(options, 'hash.in')) {
         if (options.hash.in === 'primary_tag' && _.get(post, 'primary_tag.slug')) {
@@ -44,6 +59,17 @@ buildApiOptions = function buildApiOptions(options, post) {
             apiOptions.filter += '+author:' + post.author.slug;
         }
     }
+
+    if (_.get(options, 'hash.order')) {
+        let revOp = op === '>' ? '<=' : '>';
+        let revOrderDirection = options.name === 'prev_post' ? 'asc' : 'desc';
+        apiOptions.order = `${options.hash.order} ${revOrderDirection}`;
+        apiOptions.filter +=  `+${options.hash.order}:${revOp}${post.sort_order}`;
+    }
+
+    console.log('>>>>>> ' + options.name);
+    console.log('>>>>>> Order', apiOptions.order);
+    console.log('>>>>>> Filter', apiOptions.filter);
 
     return apiOptions;
 };
