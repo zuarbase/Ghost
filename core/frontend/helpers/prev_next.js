@@ -67,10 +67,6 @@ buildApiOptions = function buildApiOptions(options, post) {
         apiOptions.filter +=  `+${options.hash.order}:${revOp}${post.sort_order}`;
     }
 
-    console.log('>>>>>> ' + options.name);
-    console.log('>>>>>> Order', apiOptions.order);
-    console.log('>>>>>> Filter', apiOptions.filter);
-
     return apiOptions;
 };
 
