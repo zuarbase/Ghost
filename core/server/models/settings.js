@@ -207,6 +207,8 @@ Settings = ghostBookshelf.Model.extend({
         var options = this.filterOptions(unfilteredOptions, 'populateDefaults'),
             self = this;
 
+        console.log('options', options);
+
         if (!options.context) {
             options.context = internalContext.context;
         }

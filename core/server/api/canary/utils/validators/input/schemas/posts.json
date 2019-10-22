@@ -9,6 +9,9 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "sort_order": {
+                    "type": "number"
+                },
                 "title": {
                     "type": "string",
                     "maxLength": 2000
@@ -43,7 +46,7 @@
                 },
                 "visibility": {
                     "type": ["string", "null"],
-                    "enum": ["public"]
+                    "enum": ["public", "members", "paid"]
                 },
                 "meta_title": {
                     "type": ["string", "null"],

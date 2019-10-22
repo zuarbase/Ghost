@@ -14,7 +14,7 @@ module.exports.QUERY = {
         type: 'read',
         resource: 'authors',
         options: {
-            slug: '%s'
+            slug: '%s',
         }
     },
     post: {

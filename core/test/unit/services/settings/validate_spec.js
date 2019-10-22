@@ -1459,7 +1459,7 @@ describe('UNIT: services/settings/validate', function () {
                                         type: 'read',
                                         options: {
                                             slug: 'ups',
-                                            status: 'draft'
+                                            status: 'draft',
                                         }
                                     }
                                 },
@@ -2192,6 +2192,7 @@ describe('UNIT: services/settings/validate', function () {
                                         resource: 'posts',
                                         type: 'read',
                                         options: {
+                                            order: "sort_order asc",
                                             slug: '%s'
                                         }
                                     }
@@ -2231,6 +2232,7 @@ describe('UNIT: services/settings/validate', function () {
                                         resource: 'posts',
                                         type: 'read',
                                         options: {
+                                            order: 'sort_order asc',
                                             slug: 'ups',
                                             status: 'draft'
                                         }

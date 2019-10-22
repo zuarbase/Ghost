@@ -22,7 +22,8 @@ module.exports.QUERY = {
         type: 'read',
         resource: 'posts',
         options: {
-            slug: '%s'
+            slug: '%s',
+            order: 'sort_order asc'
         }
     },
     page: {
@@ -43,7 +44,10 @@ module.exports.TAXONOMIES = {
     tag: {
         filter: 'tags:\'%s\'+tags.visibility:public',
         editRedirect: '#/settings/tags/:slug/',
-        resource: 'tags'
+        resource: 'tags',
+        options: {
+            order: 'sort_order asc'
+        }
     },
     author: {
         filter: 'authors:\'%s\'',

@@ -27,7 +27,7 @@ module.exports = {
             maxlength: 50,
             nullable: false,
             defaultTo: 'public',
-            validations: {isIn: [['public']]}
+            validations: {isIn: [['public', 'members', 'paid']]}
         },
         meta_title: {type: 'string', maxlength: 2000, nullable: true, validations: {isLength: {max: 300}}},
         meta_description: {type: 'string', maxlength: 2000, nullable: true, validations: {isLength: {max: 500}}},
@@ -57,7 +57,8 @@ module.exports = {
         twitter_title: {type: 'string', maxlength: 300, nullable: true},
         twitter_description: {type: 'string', maxlength: 500, nullable: true},
         custom_template: {type: 'string', maxlength: 100, nullable: true},
-        canonical_url: {type: 'text', maxlength: 2000, nullable: true}
+        canonical_url: {type: 'text', maxlength: 2000, nullable: true},
+        sort_order: {type: 'integer', nullable: true, unsigned: true, defaultTo: 1000}
     },
     users: {
         id: {type: 'string', maxlength: 24, nullable: false, primary: true},
@@ -174,7 +175,8 @@ module.exports = {
         created_at: {type: 'dateTime', nullable: false},
         created_by: {type: 'string', maxlength: 24, nullable: false},
         updated_at: {type: 'dateTime', nullable: true},
-        updated_by: {type: 'string', maxlength: 24, nullable: true}
+        updated_by: {type: 'string', maxlength: 24, nullable: true},
+        order: {type: 'integer', nullable: true, unsigned: true, defaultTo: 1000}
     },
     posts_tags: {
         id: {type: 'string', maxlength: 24, nullable: false, primary: true},
@@ -385,6 +387,16 @@ module.exports = {
     members: {
         id: {type: 'string', maxlength: 24, nullable: false, primary: true},
         email: {type: 'string', maxlength: 191, nullable: false, unique: true, validations: {isEmail: true}},
+        name: {type: 'string', maxlength: 191, nullable: true},
+        created_at: {type: 'dateTime', nullable: false},
+        created_by: {type: 'string', maxlength: 24, nullable: false},
+        updated_at: {type: 'dateTime', nullable: true},
+        updated_by: {type: 'string', maxlength: 24, nullable: true}
+    },
+    members_stripe_customers: {
+        id: {type: 'string', maxlength: 24, nullable: false, primary: true},
+        member_id: {type: 'string', maxlength: 24, nullable: false, unique: false},
+        customer_id: {type: 'string', maxlength: 255, nullable: false, unique: true},
         created_at: {type: 'dateTime', nullable: false},
         created_by: {type: 'string', maxlength: 24, nullable: false},
         updated_at: {type: 'dateTime', nullable: true},
