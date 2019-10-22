@@ -31,7 +31,7 @@ describe('{{next_post}} helper', function () {
             browsePostStub = sinon.stub(api['v0.1'].posts, 'browse').callsFake(function (options) {
                 if (options.filter.indexOf('published_at:>') > -1) {
                     return Promise.resolve({
-                        posts: [{slug: '/next/', title: 'post 3'}]
+                        posts: [{slug: '/next/', title: 'post 3', sort: '1'}]
                     });
                 }
             });
