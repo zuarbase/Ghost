@@ -90,5 +90,21 @@ module.exports = createCard({
         }
 
         return figure;
+    },
+
+    absoluteToRelative(urlUtils, payload, options) {
+        if (payload.metadata) {
+            payload.metadata.url = payload.metadata.url && urlUtils.absoluteToRelative(payload.metadata.url, options);
+        }
+        payload.caption = payload.caption && urlUtils.htmlAbsoluteToRelative(payload.caption, options);
+        return payload;
+    },
+
+    relativeToAbsolute(urlUtils, payload, options) {
+        if (payload.metadata) {
+            payload.metadata.url = payload.metadata.url && urlUtils.relativeToAbsolute(payload.metadata.url, options);
+        }
+        payload.caption = payload.caption && urlUtils.htmlRelativeToAbsolute(payload.caption, options);
+        return payload;
     }
 });
