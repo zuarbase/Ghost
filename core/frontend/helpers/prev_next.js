@@ -61,14 +61,12 @@ buildApiOptions = function buildApiOptions(options, post) {
     }
 
     if (_.get(options, 'hash.order')) {
-        console.log('HASH.ORDER='+options.hash.order);
         let revOp = op === '>' ? '<=' : '>';
         let revOrderDirection = options.name === 'prev_post' ? 'asc' : 'desc';
         apiOptions.order = `${options.hash.order} ${revOrderDirection}`;
         apiOptions.filter +=  `+${options.hash.order}:${revOp}${post.sort_order}`;
     }
 
-    console.log('API OPTIONS', JSON.stringify(apiOptions));
     return apiOptions;
 };
 
