@@ -38,11 +38,11 @@ buildApiOptions = function buildApiOptions(options, post) {
 
     if (_.get(options, 'hash.in')) {
         if (options.hash.in === 'primary_tag' && _.get(post, 'primary_tag.slug')) {
-            apiOptions.filter += defaultOrderFilter + '+primary_tag:' + post.primary_tag.slug;
+            apiOptions.filter += '+primary_tag:' + post.primary_tag.slug;
         } else if (options.hash.in === 'primary_author' && _.get(post, 'primary_author.slug')) {
-            apiOptions.filter += defaultOrderFilter + '+primary_author:' + post.primary_author.slug;
+            apiOptions.filter += '+primary_author:' + post.primary_author.slug;
         } else if (options.hash.in === 'author' && _.get(post, 'author.slug')) {
-            apiOptions.filter += defaultOrderFilter + '+author:' + post.author.slug;
+            apiOptions.filter += '+author:' + post.author.slug;
         }
     }
 
